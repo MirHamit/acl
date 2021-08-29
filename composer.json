@@ -1,0 +1,38 @@
+{
+    "name": "mirhamit/acl",
+    "description": "Access Level Control For Laravel",
+    "keywords": [
+        "MirHamit",
+        "Access Control List",
+        "acl"
+    ],
+    "homepage": "https://github.com/MirHamit/acl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hamid Musavi",
+            "email": "w1w@yahoo.com",
+            "homepage": "https://kratos.ir",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "^7.2.5|^8.0",
+        "illuminate/auth": "^6.0|^7.0|^8.0",
+        "illuminate/database": "^6.0|^7.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MirHamit\\ACL\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MirHamit\\ACL\\ACLServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
