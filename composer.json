@@ -2,6 +2,7 @@
     "name": "mirhamit/acl",
     "description": "Access Level Control For Laravel",
     "keywords": [
+        "laravel",
         "MirHamit",
         "Access Control List",
         "acl"
