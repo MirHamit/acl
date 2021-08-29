@@ -54,6 +54,16 @@ php artisan migrate
 
 ---
 ## Usage
+Add HasPermission to your user model
+```php
+use MirHamit\ACL\HasPermissions;
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable, HasPermissions;
+...
+}
+```
+
 You can add multiple roles in `roles` table and permissions in `permissions` table and bind permission to role in `permission_role` table
 
 You can use middleware:
