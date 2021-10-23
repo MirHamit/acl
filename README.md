@@ -35,17 +35,17 @@ composer require mirhamit/acl
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="MirHamit\acl\ACLServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="MirHamit\ACL\ACLServiceProvider" --tag="acl-migrations"
 ```
 
 And publish language files for customize language
 ```bash
-php artisan vendor:publish --provider="MirHamit\acl\ACLServiceProvider" --tag="lang"
+php artisan vendor:publish --provider="MirHamit\ACL\ACLServiceProvider" --tag="acl-lang"
 ```
 
 Or publish both language and migrations
 ```bash
-php artisan vendor:publish --provider="MirHamit\acl\ACLServiceProvider"
+php artisan vendor:publish --provider="MirHamit\ACL\ACLServiceProvider"
 ```
 And run the migration
 ```bash
@@ -82,9 +82,16 @@ Route::get('test', function () {
 ```
 Or you can use it from Laravel Blade
 ```php
-@role
+@role('test-role')
 // user has role and can access to this section
 @endrole
+```
+
+And For Check Permission
+```php
+@permission('test-permission')
+// user has role and can access to this section
+@endpermission
 ```
 
 ---
