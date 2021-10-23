@@ -81,7 +81,7 @@ class ACLServiceProvider extends ServiceProvider
             });
 
             $bladeCompiler->directive('permission', function ($arguments) {
-                return "<?php if(auth()->check() && auth()->user()->hasPermissionTo($arguments)) : ?>";
+                return "<?php if(auth()->check() && auth()->user()->hasPermission($arguments)) : ?>";
             });
 
             $bladeCompiler->directive('endpermission', function () {
