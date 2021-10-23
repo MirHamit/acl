@@ -96,7 +96,6 @@ class ACLServiceProvider extends ServiceProvider
      * Configure the Sanctum middleware and priority.
      *
      * @return void
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function configureMiddleware()
     {

@@ -85,10 +85,10 @@ trait HasPermissions
         return $this->belongsToMany(Permission::class);
     }
 
-    protected function hasPermission($permission)
+    public function hasPermission($permission)
     {
 
-        return (bool) $this->permissions->where('slug', $permission->slug)->count();
+        return (bool) $this->permissions->where('slug', $permission)->count() || $this->hasPermissionTo($permission);
     }
 
     protected function getAllPermissions(array $permissions)
