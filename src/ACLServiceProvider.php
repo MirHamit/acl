@@ -43,10 +43,10 @@ class ACLServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
-        ], 'migrations');
+        ], 'acl-migrations');
         $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/acl'),
-        ], 'lang');
+        ], 'acl-lang');
     }
 
     protected function registerGate()
@@ -79,8 +79,18 @@ class ACLServiceProvider extends ServiceProvider
             $bladeCompiler->directive('endrole', function () {
                 return '<?php endif; ?>';
             });
+
+            $bladeCompiler->directive('permission', function ($arguments) {
+                return "<?php if(auth()->check() && auth()->user()->hasPermissionTo($arguments)) : ?>";
+            });
+
+            $bladeCompiler->directive('endpermission', function () {
+                return '<?php endif; ?>';
+            });
         });
     }
+
+
 
     /**
      * Configure the Sanctum middleware and priority.
