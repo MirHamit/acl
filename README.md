@@ -83,6 +83,7 @@ Route::get('test', function () {
 Or you can use it from Laravel Blade
 ```php
 @role('test-role')
+// or @role(['test-role', 'test-role2'])
 // user has role and can access to this section
 @endrole
 ```
@@ -90,6 +91,7 @@ Or you can use it from Laravel Blade
 And For Check Permission
 ```php
 @permission('test-permission')
+// or @permission(['test-permission', 'test-permission2'])
 // user has role and can access to this section
 @endpermission
 ```
