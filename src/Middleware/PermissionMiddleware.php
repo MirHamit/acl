@@ -21,14 +21,12 @@ class PermissionMiddleware
      * @param $permission
      * @return mixed
      */
-    public function handle($request, Closure $next, ...$permission)
+    public function handle($request, Closure $next, ...$permissions)
     {
-        $permission = $permission ? str_replace(' ', '', $permission) : null;
+        $permission = $permissions ? str_replace(' ', '', $permissions) : null;
 
-        foreach ($permission as $item) {
-            if (!$request->user()->can(trim($item, ' '))) {
-                abort(403, trans('acl::acl.permission_denied'));
-            }
+        if (auth()->check() && !auth()->user()->hasPermission($permission)) {
+            abort(403, trans('acl::acl.permission_denied'));
         }
 
         return $next($request);

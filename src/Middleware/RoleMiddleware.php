@@ -24,7 +24,7 @@ class RoleMiddleware
             abort(403, 'acl::acl.role_denied');
         }
 
-        if ($permission !== null && !$request->user()->hasPermissionTo($permission)) {
+        if ($permission !== null && !$request->user()->hasPermission($permission)) {
             abort(403, trans('acl::acl.role_permission_denied'));
         }
 
