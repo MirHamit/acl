@@ -51,7 +51,9 @@ trait HasPermissions
     public function hasPermissionThroughRole($permission)
     {
         $permission = Permission::where('slug', $permission)->get()->first();
-        if (! $permission) return false;
+        if (!$permission) {
+            return false;
+        }
         foreach ($permission->roles as $role) {
             if ($this->roles->contains($role)) {
                 return true;
@@ -61,20 +63,36 @@ trait HasPermissions
         return false;
     }
 
-    public function hasRole($roles)
+    public function hasRole($requestedRoles)
     {
-
-        if (is_array($roles)) {
-            foreach ($roles as $role) {
-                if (!$this->roles->contains('slug', $role)) {
+        if (is_array($requestedRoles)) {
+            foreach ($requestedRoles as $requestedRole) {
+                if (
+                    !$this->roles->contains('slug', $requestedRole) &&
+                    !$this->hasParentRole($requestedRoles)
+                ) {
                     return false;
                 }
             }
 
             return true;
         } else {
-            return (bool) $this->roles->contains('slug', $roles);
+            return $this->roles->contains('slug', $requestedRoles) || $this->hasParentRole($requestedRoles);
         }
+    }
+
+    public function hasParentRole($requestedRole)
+    {
+        $result = false;
+        foreach ($this->roles as $role) {
+            $parentRole = $role->parentRole();
+            if ($parentRole != null) {
+                if ($parentRole->contains('slug', $requestedRole)) {
+                    $result = true;
+                }
+            }
+        }
+        return $result;
     }
 
     public function roles()
@@ -91,9 +109,10 @@ trait HasPermissions
 
     public function hasPermission($permissions): bool
     {
-        if (is_array($permissions)){
+        if (is_array($permissions)) {
             foreach ($permissions as $permission) {
-                if ((bool) !$this->permissions->where('slug', $permission)->count() && !$this->hasPermissionTo($permission)) {
+                if ((bool) !$this->permissions->where('slug',
+                        $permission)->count() && !$this->hasPermissionTo($permission)) {
                     return false;
                 }
             }
