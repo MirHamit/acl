@@ -81,14 +81,19 @@ trait HasPermissions
         }
     }
 
-    public function hasParentRole($requestedRole)
+    public function hasParentRole($requestedRole, $roles = null)
     {
         $result = false;
-        foreach ($this->roles as $role) {
-            $parentRole = $role->parentRole();
-            if ($parentRole != null) {
-                if ($parentRole->contains('slug', $requestedRole)) {
+        if ($roles == null) {
+            $roles = $this->roles;
+        }
+        foreach ($roles as $role) {
+            $subRoles = $role->subRoles();
+            if ($subRoles != null) {
+                if ($subRoles->contains('slug', $requestedRole)) {
                     $result = true;
+                } else {
+                    $result = $result || $this->hasParentRole($requestedRole, $subRoles);
                 }
             }
         }
