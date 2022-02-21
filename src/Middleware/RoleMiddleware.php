@@ -16,16 +16,11 @@ class RoleMiddleware
      * @param null $permission
      * @return mixed
      */
-    public function handle($request, Closure $next, $role, $permission = null)
+    public function handle($request, Closure $next, ...$roles)
     {
-        $role = $role ? str_replace(' ', '', $role) : null;
-        $permission = $permission ? str_replace(' ', '', $permission) : null;
-        if (!$request->user()->hasRole($role)) {
+        $roles = $roles ? str_replace(' ', '', $roles) : null;
+        if (!$request->user()->hasRole($roles)) {
             abort(403, 'acl::acl.role_denied');
-        }
-
-        if ($permission !== null && !$request->user()->hasPermission($permission)) {
-            abort(403, trans('acl::acl.role_permission_denied'));
         }
 
         return $next($request);
