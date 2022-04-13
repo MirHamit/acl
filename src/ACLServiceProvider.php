@@ -57,7 +57,7 @@ class ACLServiceProvider extends ServiceProvider
             try {
                 Permission::get()->map(function ($permission) {
                     Gate::define($permission->slug, function ($user) use ($permission) {
-                        return $user->hasPermissionTo($permission->slug);
+                        return $user->hasPermission($permission->slug);
                     });
                 });
             } catch (Exception $e) {
