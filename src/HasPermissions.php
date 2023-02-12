@@ -67,37 +67,15 @@ trait HasPermissions
     {
         if (is_array($requestedRoles)) {
             foreach ($requestedRoles as $requestedRole) {
-                if (
-                    !$this->roles->contains('slug', $requestedRole) &&
-                    !$this->hasParentRole($requestedRoles)
-                ) {
+                if (!$this->roles->contains('slug', $requestedRole)) {
                     return false;
                 }
             }
 
             return true;
         } else {
-            return $this->roles->contains('slug', $requestedRoles) || $this->hasParentRole($requestedRoles);
+            return $this->roles->contains('slug', $requestedRoles);
         }
-    }
-
-    public function hasParentRole($requestedRole, $roles = null)
-    {
-        $result = false;
-        if ($roles == null) {
-            $roles = $this->roles;
-        }
-        foreach ($roles as $role) {
-            $subRoles = $role->subRoles();
-            if ($subRoles != null) {
-                if ($subRoles->contains('slug', $requestedRole)) {
-                    $result = true;
-                } else {
-                    $result = $result || $this->hasParentRole($requestedRole, $subRoles);
-                }
-            }
-        }
-        return $result;
     }
 
     public function roles()
@@ -116,8 +94,7 @@ trait HasPermissions
     {
         if (is_array($permissions)) {
             foreach ($permissions as $permission) {
-                if ((bool) !$this->permissions->where('slug',
-                        $permission)->count() && !$this->hasPermissionTo($permission)) {
+                if ((bool)!$this->permissions->where('slug', $permission)->count() && !$this->hasPermissionTo($permission)) {
                     return false;
                 }
             }

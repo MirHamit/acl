@@ -26,13 +26,4 @@ class Role extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function subRoles()
-    {
-        return Role::select('*')->where('parent_id',$this->id)->get();
-    }
-
-    public function parentRole()
-    {
-        return Role::select('*')->where('id',$this->parent_id)->get()->first();
-    }
 }
