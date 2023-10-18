@@ -5,10 +5,21 @@ namespace MirHamit\ACL\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Permission extends Model
 {
     use HasFactory;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function() {
+            Cache::forget('allPermissionRoles');
+            Cache::forget('permission');
+        });
+    }
 
     public function roles()
     {
