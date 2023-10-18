@@ -1,5 +1,7 @@
 This package allows you to manage user permissions and groups in a database, it is compatible with Laravel v5.8 or higher.
 Changelog:
+## V1.1.7:
+Use Laravel Cache System to reduce Queries on Database
 ## V1.1.6:
 Add Static table to user Roles and Permissions
 ## V1.1.5:
