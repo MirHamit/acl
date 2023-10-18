@@ -64,6 +64,16 @@ class User extends Authenticatable
 }
 ```
 
+Give Permission To User:
+```
+$user->syncPermissions([1,2,3]); // Permission IDS
+```
+Give Role To User:
+```
+$user->syncRoles([1,2,3]); // Roles IDS
+```
+
+
 You can add multiple roles in `roles` table and permissions in `permissions` table and bind permission to role in `permission_role` table
 
 You can use middleware:
