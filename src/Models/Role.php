@@ -5,6 +5,7 @@ namespace MirHamit\ACL\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Role extends Model
 {
@@ -17,6 +18,16 @@ class Role extends Model
         'label',
         'parent_id',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function() {
+            Cache::forget('allPermissionRoles');
+            Cache::forget('permission');
+        });
+    }
 
     public function permissions()
     {
