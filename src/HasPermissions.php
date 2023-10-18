@@ -6,11 +6,23 @@
 
 namespace MirHamit\ACL;
 
+use Illuminate\Support\Facades\Cache;
 use MirHamit\ACL\Models\Permission;
 use MirHamit\ACL\Models\Role;
 
 trait HasPermissions
 {
+
+    public function syncPermission(array $permissions)
+    {
+
+        $this->permissions()->sync($permissions);
+    }
+    public function syncRole(array $roles)
+    {
+
+        $this->roles()->sync($roles);
+    }
 
     public function givePermissionsTo(...$permissions)
     {
@@ -50,11 +62,18 @@ trait HasPermissions
 
     public function hasPermissionThroughRole($permission)
     {
-        $permission = Permission::where('slug', $permission)->get()->first();
+        $allPermissions = Cache::rememberForever('permission', function () {
+            return Permission::all();
+        });
+        $permission = $allPermissions->where('slug', $permission)->first();
+        //        $permission = Permission::where('slug', $permission)->get()->first();
         if (!$permission) {
             return false;
         }
-        foreach ($permission->roles as $role) {
+        $allPermissionRoles = Cache::rememberForever('allPermissionRoles', function () use ($permission) {
+            return $permission->roles;
+        });
+        foreach ($allPermissionRoles as $role) {
             if ($this->roles->contains($role)) {
                 return true;
             }
@@ -94,7 +113,8 @@ trait HasPermissions
     {
         if (is_array($permissions)) {
             foreach ($permissions as $permission) {
-                if ((bool)!$this->permissions->where('slug', $permission)->count() && !$this->hasPermissionTo($permission)) {
+                if ((bool) !$this->permissions->where('slug',
+                        $permission)->count() && !$this->hasPermissionTo($permission)) {
                     return false;
                 }
             }
