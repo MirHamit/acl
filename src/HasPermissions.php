@@ -70,11 +70,12 @@ trait HasPermissions
         if (!$permission) {
             return false;
         }
-        $allPermissionRoles = Cache::rememberForever('allPermissionRoles', function () use ($permission) {
-            return $permission->roles;
-        });
-        foreach ($allPermissionRoles as $role) {
-            if ($this->roles->contains($role)) {
+//        $allPermissionRoles = Cache::rememberForever('allPermissionRoles', function () use ($permission) {
+//            return $permission->roles;
+//        });
+//        dd($permission, $this->roles[0]->permissions->contains($permission));
+        foreach ($this->roles as $role) {
+            if ($role->permissions->contains($permission)) {
                 return true;
             }
         }
