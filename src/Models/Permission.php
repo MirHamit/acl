@@ -11,11 +11,13 @@ class Permission extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'slug', 'label'];
+
     protected static function boot()
     {
         parent::boot();
 
-        static::saving(function() {
+        static::saving(function () {
             Cache::forget('allPermissionRoles');
             Cache::forget('permission');
         });
