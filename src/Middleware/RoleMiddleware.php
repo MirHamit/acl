@@ -19,6 +19,9 @@ class RoleMiddleware
     public function handle($request, Closure $next, ...$roles)
     {
         $roles = $roles ? str_replace(' ', '', $roles) : null;
+        if (!$request->user()) {
+            abort(403, 'acl::acl.role_denied');
+        }
         if (!$request->user()->hasRole($roles)) {
             abort(403, 'acl::acl.role_denied');
         }
