@@ -24,8 +24,10 @@ class PermissionMiddleware
     public function handle($request, Closure $next, ...$permissions)
     {
         $permission = $permissions ? str_replace(' ', '', $permissions) : null;
-
-        if (auth()->check() && !auth()->user()->hasPermission($permission)) {
+        if (!$request->user()) {
+            abort(403, trans('acl::acl.permission_denied'));
+        }
+        if (!$request->user()->hasPermission($permission)) {
             abort(403, trans('acl::acl.permission_denied'));
         }
 
