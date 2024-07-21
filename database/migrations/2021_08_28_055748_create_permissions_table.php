@@ -16,7 +16,7 @@ class CreatePermissionsTable extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name'); // edit posts
-            $table->string('slug'); //edit-posts
+            $table->string('slug')->unique(); //edit-posts
             $table->string('label')->nullable(); // user can edit posts
             $table->timestamps();
         });
